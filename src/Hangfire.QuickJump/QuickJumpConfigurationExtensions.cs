@@ -20,7 +20,7 @@ namespace Hangfire.QuickJump
 
             var jsPath = DashboardRoutes.Routes.Contains("/js[0-9]+") ? "/js[0-9]+" : "/js[0-9]{3}";
             DashboardRoutes.Routes.Append(jsPath, new EmbeddedResourceDispatcher(assembly, "Hangfire.QuickJump.Dashboard.quick-jump.js"));
-            //DashboardRoutes.Routes.Append(jsPath, new DynamicJsDispatcher(options));
+            DashboardRoutes.Routes.Append(jsPath, new DynamicJsDispatcher());
 
             var cssPath = DashboardRoutes.Routes.Contains("/css[0-9]+") ? "/css[0-9]+" : "/css[0-9]{3}";
             DashboardRoutes.Routes.Append(cssPath, new EmbeddedResourceDispatcher(assembly, "Hangfire.QuickJump.Dashboard.quick-jump.css"));

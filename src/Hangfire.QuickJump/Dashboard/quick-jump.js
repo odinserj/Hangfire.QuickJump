@@ -2,7 +2,7 @@
     if (window.location.href.indexOf('/recurring') !== -1) {
         $('.js-jobs-list table tr td:nth-child(2)').each(function () {
             var jobId = $(this).text();
-            $(this).html('<a href="/recurring/details/' + encodeURI(jobId) + '/">' + jobId + '</a>');
+            $(this).html('<a href="' + Hangfire.config.pathBase + '/recurring/details/' + encodeURI(jobId) + '/">' + jobId + '</a>');
         });
     }
 
@@ -26,7 +26,7 @@
         e.preventDefault();
     });
 
-    $('<form id="jumpForm" action="/quick-jump">' +
+    $('<form id="jumpForm" action="' + Hangfire.config.pathBase + '/quick-jump">' +
         '<div class= "input-group form-group">' +
           '<input name="jobid" type="text" class="form-control" placeholder="Quick Jump by Job Id...">' +
           '<span class="input-group-btn">' +
