@@ -1,12 +1,15 @@
 ﻿@* Generator: Template TypeVisibility: Internal GeneratePrettyNames: True TrimLeadingUnderscores : true *@
 @using System
+@using Hangfire
 @using Hangfire.Dashboard
 @using Hangfire.Dashboard.Pages
+@using Hangfire.Dashboard.Resources
 @using Hangfire.QuickJump.Utils
+@using Hangfire.States
 @using Hangfire.Storage
 @inherits RazorPage
 @{
-    RecurringJobDto recurringJob = null;
+    RecurringJobDto recurringJob;
 
     using (var connection = Storage.GetConnection())
     {
@@ -16,14 +19,160 @@
     Layout = new LayoutPage(String.Format("Recurring Job '{0}'", RecurringJobId));
 }
 
-@if (recurringJob == null)
-{
-    <div class="alert alert-warning">Couldn't find recurring job '@RecurringJobId'.</div>
-}
-else
-{
-    <div>
-        Hello world, @RecurringJobId!
-        @recurringJob?.Cron
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header">@String.Format("Recurring Job '{0}'", RecurringJobId)</h1>
+        @if (recurringJob == null)
+        {
+            <div class="alert alert-warning">Couldn't find recurring job '@RecurringJobId'.</div>
+        }
+        else
+        {
+            <table class="table table-hover">
+                <col width="200">
+                <tr>
+                    <th>@Strings.RecurringJobsPage_Table_Cron</th>
+                    <td>
+                        <code>@recurringJob.Cron</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th>@Strings.RecurringJobsPage_Table_TimeZone</th>
+                    <td>
+                        @if (!String.IsNullOrWhiteSpace(recurringJob.TimeZoneId))
+                        {
+                            string displayName;
+                            Exception exception = null;
+
+                            try
+                            {
+                                var resolver = DashboardOptions.TimeZoneResolver ?? new DefaultTimeZoneResolver();
+                                displayName = resolver.GetTimeZoneById(recurringJob.TimeZoneId).DisplayName;
+                            }
+                            catch (Exception ex)
+                            {
+                                displayName = null;
+                                exception = ex;
+                            }
+
+                            <span title="@displayName" data-container="body">@recurringJob.TimeZoneId
+                                @if (exception != null)
+                                {
+                                    <span class="glyphicon glyphicon-exclamation-sign" title="@exception.Message"></span>
+                                }
+                            </span>
+                        }
+                        else
+                        {
+                            @: UTC
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>@Strings.Common_Job</th>
+                    <td>
+                        @if (recurringJob.Job != null)
+                        {
+                            @: @Html.JobName(recurringJob.Job)
+                        }
+                        else if (recurringJob.LoadException != null && recurringJob.LoadException.InnerException != null)
+                        {
+                            <em>@recurringJob.LoadException.InnerException.Message</em>
+                        }
+                        else if (recurringJob.LoadException != null)
+                        {
+                            <em>@recurringJob.LoadException.Message</em>
+                        }
+                        else
+                        {
+                            <em>@Strings.Common_NotAvailable</em>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>@Strings.RecurringJobsPage_Table_NextExecution</th>
+                    <td>
+                        @if (recurringJob.NextExecution != null)
+                        {
+                            @Html.RelativeTime(recurringJob.NextExecution.Value)
+                        }
+                        else
+                        {
+                            if (!String.IsNullOrEmpty(recurringJob.Error))
+                            {
+                                <span class="label label-danger text-uppercase" title="@recurringJob.Error">@Strings.Common_Error</span>
+                            }
+                            else
+                            {
+                                <span class="label label-warning text-uppercase" title="@Strings.RecurringJobsPage_RecurringJobDisabled_Tooltip">@Strings.Common_Disabled</span>
+                            }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>@Strings.RecurringJobsPage_Table_LastExecution</th>
+                    <td>
+                        @if (recurringJob.LastExecution != null)
+                        {
+                            if (!String.IsNullOrEmpty(recurringJob.LastJobId))
+                            {
+                                <a href="@Url.JobDetails(recurringJob.LastJobId)" style="text-decoration: none">
+                                    <span class="label label-default label-hover" style="@($"background-color: {JobHistoryRenderer.GetForegroundStateColor(recurringJob.LastJobState ?? EnqueuedState.StateName)};")">
+                                        @Html.RelativeTime(recurringJob.LastExecution.Value)
+                                    </span>
+                                </a>
+                            }
+                            else
+                            {
+                                <em>
+                                    @Strings.RecurringJobsPage_Canceled @Html.RelativeTime(recurringJob.LastExecution.Value)
+                                </em>
+                            }
+                        }
+                        else
+                        {
+                            <em>@Strings.Common_NotAvailable</em>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>@Strings.Common_Created</th>
+                    <td>
+                        @if (recurringJob.CreatedAt != null)
+                        {
+                            @Html.RelativeTime(recurringJob.CreatedAt.Value)
+                        }
+                        else
+                        {
+                            <em>N/A</em>
+                        }
+                    </td>
+                </tr>
+            </table>
+
+            <div>
+                @if (!IsReadOnly)
+                {
+                    <button class="recurring-job-command btn btn-sm btn-primary"
+                            data-id="@RecurringJobId"
+                            data-url="@Url.To("/recurring/trigger")"
+                            data-loading-text="@Strings.RecurringJobsPage_Triggering">
+                        <span class="glyphicon glyphicon-play-circle"></span>
+                        @Strings.RecurringJobsPage_TriggerNow
+                    </button>
+                }
+                @if (!IsReadOnly)
+                {
+                    <button class="recurring-job-command btn btn-sm btn-default"
+                            data-id="@RecurringJobId"
+                            data-url="@Url.To("/recurring/remove")"
+                            data-loading-text="@Strings.Common_Deleting"
+                            data-confirm="@Strings.Common_DeleteConfirm">
+                        <span class="glyphicon glyphicon-remove"></span>
+                        @Strings.Common_Delete
+                    </button>
+                }
+            </div>
+        }
     </div>
-}
+</div>

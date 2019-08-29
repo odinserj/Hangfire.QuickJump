@@ -15,6 +15,8 @@ namespace ConsoleSample
                 .UseSqlServerStorage("Database=Hangfire.QuickJump;Integrated Security=SSPI;");
 
             BackgroundJob.Enqueue(() => Console.WriteLine("Hello, world!"));
+            RecurringJob.AddOrUpdate("minutely", () => Console.WriteLine("Minutely"), Cron.Minutely);
+            RecurringJob.AddOrUpdate("hourly", () => Console.WriteLine("Hourly"), Cron.Hourly);
 
             using (WebApp.Start<Startup>("http://localhost:12002"))
             {

@@ -1,7 +1,30 @@
 ﻿$(function () {
-    if (window.location.indexOf('/recurring') !== -1) {
-        alert('recurring!');
+    if (window.location.href.indexOf('/recurring') !== -1) {
+        $('.js-jobs-list table tr td:nth-child(2)').each(function () {
+            var jobId = $(this).text();
+            $(this).html('<a href="/recurring/details/' + encodeURI(jobId) + '/">' + jobId + '</a>');
+        });
     }
+
+    $(this).on('click', '.recurring-job-command', function (e) {
+        var $this = $(this);
+        var confirmText = $this.data('confirm');
+        var jobId = $this.data('id');
+
+        if (!confirmText || confirm(confirmText)) {
+            $this.prop('disabled');
+            var loadingDelay = setTimeout(function () {
+                $this.button('loading');
+            }, 100);
+
+            $.post($this.data('url'), { 'jobs[]': jobId }, function () {
+                clearTimeout(loadingDelay);
+                window.location.reload();
+            });
+        }
+
+        e.preventDefault();
+    });
 
     $('<form id="jumpForm" action="/quick-jump">' +
         '<div class= "input-group form-group">' +
@@ -31,7 +54,7 @@
             })
             .done(function (data) {
                 if (data.location && data.location[0] === '/') {
-                    window.location.href = data.location;
+                    window.location.href = encodeURI(data.location);
                 }
             })
             .fail(function (data) {

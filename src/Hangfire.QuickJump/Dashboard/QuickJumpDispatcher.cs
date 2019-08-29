@@ -24,6 +24,7 @@ namespace Hangfire.QuickJump.Dashboard
             var jobIds = await context.Request.GetFormValuesAsync("jobid").ConfigureAwait(false);
             var jobId = jobIds.FirstOrDefault()?.Trim();
 
+            var urlHelper = new UrlHelper(context);
             string link = null;
 
             if (!String.IsNullOrEmpty(jobId))
@@ -36,7 +37,7 @@ namespace Hangfire.QuickJump.Dashboard
                     var jobDetails = monitoringApi.JobDetails(normalizedId);
                     if (jobDetails != null)
                     {
-                        var urlHelper = new UrlHelper(context);
+                        
                         link = urlHelper.JobDetails(normalizedId);
                     }
                 }
@@ -52,7 +53,7 @@ namespace Hangfire.QuickJump.Dashboard
                         var recurringJob = connection.GetAllEntriesFromHash($"recurring-job:{jobId}");
                         if (recurringJob != null && recurringJob.Count != 0)
                         {
-                            link = "/recurring";
+                            link = urlHelper.To("/recurring/details/" + jobId);
                         }
                     }
                 }

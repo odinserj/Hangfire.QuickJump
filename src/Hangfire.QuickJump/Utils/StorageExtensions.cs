@@ -68,8 +68,7 @@ namespace Hangfire.QuickJump.Utils
 
             if (hash.TryGetValue("Error", out var error))
             {
-                /*dto.Error
-                dto.Error = error;*/
+                dto.Error = error;
             }
 
             return dto;
