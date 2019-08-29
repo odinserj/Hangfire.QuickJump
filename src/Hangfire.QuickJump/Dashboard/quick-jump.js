@@ -28,7 +28,7 @@
 
     $('<form id="jumpForm" action="' + Hangfire.config.pathBase + '/quick-jump">' +
         '<div class= "input-group form-group">' +
-          '<input name="jobid" type="text" class="form-control" placeholder="Quick Jump by Job Id...">' +
+          '<input name="jobid" type="text" class="form-control" placeholder="Quick Jump by Job, Recurring Job or Batch Id...">' +
           '<span class="input-group-btn">' +
             '<button id="searchBtn" class="btn btn-default" type="submit">' +
               '<span class="glyphicon glyphicon-share-alt"></span>' +
@@ -63,7 +63,7 @@
 
                 setTimeout(function () {
                     $('#jumpForm .input-group').removeClass('has-warning');
-                    $('#jumpForm input[name="jobid"]').attr('placeholder', 'Quick Jump by Job Id...');
+                    $('#jumpForm input[name="jobid"]').attr('placeholder', 'Quick Jump by Job, Recurring Job or Batch Id...');
                 }, 2500);
             })
             .always(function () {
