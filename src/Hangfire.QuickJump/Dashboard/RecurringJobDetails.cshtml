@@ -1,0 +1,29 @@
+﻿@* Generator: Template TypeVisibility: Internal GeneratePrettyNames: True TrimLeadingUnderscores : true *@
+@using System
+@using Hangfire.Dashboard
+@using Hangfire.Dashboard.Pages
+@using Hangfire.QuickJump.Utils
+@using Hangfire.Storage
+@inherits RazorPage
+@{
+    RecurringJobDto recurringJob = null;
+
+    using (var connection = Storage.GetConnection())
+    {
+        recurringJob = connection.GetRecurringJobDto(RecurringJobId);
+    }
+
+    Layout = new LayoutPage(String.Format("Recurring Job '{0}'", RecurringJobId));
+}
+
+@if (recurringJob == null)
+{
+    <div class="alert alert-warning">Couldn't find recurring job '@RecurringJobId'.</div>
+}
+else
+{
+    <div>
+        Hello world, @RecurringJobId!
+        @recurringJob?.Cron
+    </div>
+}

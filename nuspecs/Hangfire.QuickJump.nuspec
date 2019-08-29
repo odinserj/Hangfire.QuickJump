@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Hangfire.QuickJump</id>
+    <version>0.0.0</version>
+    <title>Hangfire.QuickJump</title>
+    <authors>Sergey Odinokov</authors>
+    <owners>odinserj</owners>
+    <projectUrl>http://hangfire.io/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/odinserj/Hangfire.QuickJump/LICENSE</licenseUrl>
+    <description>Quick jump to job details pages by using job identifiers.</description>
+    <copyright>Copyright © 2019 Sergey Odinokov</copyright>
+    <tags>Hangfire Dashboard</tags>
+    <releaseNotes>https://github.com/odinserj/Hangfire.QuickJump/releases
+ 
+    </releaseNotes>
+    <dependencies>
+      <group targetFramework="net45">
+        <dependency id="Hangfire.Core" version="1.5.0" />
+      </group>
+      <group targetFramework="netstandard1.3">
+        <dependency id="NETStandard.Library" version="1.6.0" />
+        <dependency id="Hangfire.Core" version="1.6.0" />
+      </group>
+      <group targetFramework="netstandard2.0">
+        <dependency id="Hangfire.Core" version="1.6.0" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="net45\Hangfire.QuickJump.dll" target="lib\net45" />    
+    <file src="netstandard1.3\Hangfire.QuickJump.dll" target="lib\netstandard1.3" />
+    <file src="netstandard2.0\Hangfire.QuickJump.dll" target="lib\netstandard2.0" />
+    
+    <file src="..\src\Hangfire.QuickJump\**\*.cs" target="src" exclude="**\obj*\**\*.cs" />
+
+    <file src="LICENSE" />
+  </files>
+</package>

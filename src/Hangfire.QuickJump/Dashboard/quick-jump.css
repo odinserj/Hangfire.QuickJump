@@ -1,0 +1,23 @@
+﻿@keyframes jumpForm-spinner {
+    to { transform: rotate(360deg); }
+}
+
+#jumpForm .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: text-bottom;
+    border: 2px solid #666;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: jumpForm-spinner .75s linear infinite;
+}
+
+#jumpForm .has-warning .btn-default {
+    color: #8a6d3b;
+    border-color: #8a6d3b;
+}
+
+#jumpForm .btn {
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}

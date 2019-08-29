@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire.QuickJump", "src\Hangfire.QuickJump\Hangfire.QuickJump.csproj", "{60A7291B-0A91-4350-A9A2-9DFE5C509C40}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{3C406AD2-88B8-410A-B3B3-522094BC68EE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleSample", "samples\ConsoleSample\ConsoleSample.csproj", "{E2740CE0-E445-4F48-9FE0-3B0198E2922C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{60A7291B-0A91-4350-A9A2-9DFE5C509C40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60A7291B-0A91-4350-A9A2-9DFE5C509C40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60A7291B-0A91-4350-A9A2-9DFE5C509C40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60A7291B-0A91-4350-A9A2-9DFE5C509C40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2740CE0-E445-4F48-9FE0-3B0198E2922C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2740CE0-E445-4F48-9FE0-3B0198E2922C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2740CE0-E445-4F48-9FE0-3B0198E2922C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2740CE0-E445-4F48-9FE0-3B0198E2922C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E2740CE0-E445-4F48-9FE0-3B0198E2922C} = {3C406AD2-88B8-410A-B3B3-522094BC68EE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {87309F96-D7EE-44FA-8DB1-69CDC5AE0832}
+	EndGlobalSection
+EndGlobal
