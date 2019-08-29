@@ -57,6 +57,18 @@ namespace Hangfire.QuickJump.Dashboard
                         }
                     }
                 }
+
+                if (link == null)
+                {
+                    using (var connection = context.Storage.GetConnection())
+                    {
+                        var batch = connection.GetAllEntriesFromHash($"batch:{jobId}");
+                        if (batch != null && batch.Count != 0)
+                        {
+                            link = urlHelper.To("/batches/" + jobId);
+                        }
+                    }
+                }
             }
 
             response.StatusCode = link != null ? 200 : 404;
