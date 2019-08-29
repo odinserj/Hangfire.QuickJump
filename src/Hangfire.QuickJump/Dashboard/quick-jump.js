@@ -37,6 +37,8 @@
         '</div>' +
       '</form>').insertBefore('.page-header');
 
+    $('#jumpForm input[name="jobid"]').focus();
+
     $('#jumpForm').submit(function (event) {
         event.preventDefault();
 
